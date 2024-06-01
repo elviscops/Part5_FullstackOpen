@@ -49,6 +49,29 @@ const Notification = ({message,mood}) => {
     )
 }
 
+const Togglable = (props) => {
+    const [visible, setVisible] = useState(false)
+
+    const hideWhenVisible = { display: visible ? 'none' : '' }
+    const showWhenVisible = { display: visible ? '' : 'none' }
+
+    const toggleVisibility = () => {
+        setVisible(!visible)
+    }
+
+    return ( 
+        <div>
+            <div style={hideWhenVisible}>
+                <button onClick={toggleVisibility}>{props.buttonLabel}</button>
+            </div>
+            <div style={showWhenVisible}>
+                {props.children}
+                <button onClick={toggleVisibility}>Close</button>
+            </div>
+        </div>
+        )
+}
+
 
 
 const App = () => {
@@ -185,7 +208,7 @@ const App = () => {
         event.preventDefault()
         console.log(event.target.value);
         setBlogURL(event.target.value);
-    }     //notificationMessage notificationMood
+    }   
 
     return (
         <div>
@@ -223,16 +246,21 @@ const App = () => {
                         </form>
                     </div>
                 </div>
+                <br></br>
                 <div>
-                    <BlogForm 
-                    title={title} 
-                    author={author} 
-                    blogURL={blogURL} 
-                    handleAddBlog={handleAddBlog}
-                    handleTitleChange={handleTitleChange}
-                    handleAuthorChange={handleAuthorChange}
-                    handleBlogURLChange={handleBlogURLChange}
-                    />   
+                    <Togglable buttonLabel="Add New Blog">
+                        <BlogForm 
+                            title={title} 
+                            author={author} 
+                            blogURL={blogURL} 
+                            handleAddBlog={handleAddBlog}
+                            handleTitleChange={handleTitleChange}
+                            handleAuthorChange={handleAuthorChange}
+                            handleBlogURLChange={handleBlogURLChange}
+                        /> 
+
+                    </Togglable>
+                      
                     <br></br>
                 </div>
                 <div>
