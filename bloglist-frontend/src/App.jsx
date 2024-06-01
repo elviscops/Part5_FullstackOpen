@@ -70,6 +70,14 @@ const App = () => {
         )  
     }, [])
 
+    useEffect(() => {
+        const loggedUserJSON = window.localStorage.getItem('loggedInUser')
+        if (loggedUserJSON) {
+          const user = JSON.parse(loggedUserJSON)
+          setUser(user)
+        }
+      }, [])
+
     const handleLogin = async (event) => {
         event.preventDefault()
         console.log('logging in with', username, password)
@@ -78,7 +86,13 @@ const App = () => {
             const user = await loginService.login({
                 username,password
             })
-            console.log(user)
+
+            window.localStorage.setItem(
+                'loggedInUser', JSON.stringify(user)
+            ) 
+
+
+            console.log(user, window.localStorage.getItem('loggedInUser'))
             setUser(user)
             
             setUsername('')
@@ -90,6 +104,14 @@ const App = () => {
             },5000)
         }
       }
+
+      const handleLogOut = async (event) => {
+        console.log("Logout")
+        window.localStorage.removeItem('loggedNoteappUser')
+        window.localStorage.clear()
+
+        }
+      
 
       const handleAddBlog = (event) => {
         event.preventDefault()
@@ -128,38 +150,44 @@ const App = () => {
 
     return (
         <div>
-        <h1>Blogs List Page</h1>
+            <h1>Blogs List Page</h1>
 
-        {  user === null &&
-            <LoginForm 
-                    username={username} 
-                    password={password} 
-                    handleLogin={handleLogin}
-                    handleUsernameChange={handleUsernameChange}
-                    handlePasswordChange={handlePasswordChange}
-        /> }
-        {  user !== null && 
-        <div>
-            <div><Notification message={(user.username+" has been logged in: ")} /><button>Log Out</button>
-            </div>
+            {  user === null &&
+                <LoginForm 
+                        username={username} 
+                        password={password} 
+                        handleLogin={handleLogin}
+                        handleUsernameChange={handleUsernameChange}
+                        handlePasswordChange={handlePasswordChange}
+            /> }
+
+            {  user !== null && 
             <div>
-                <BlogForm 
-                title={title} 
-                author={author} 
-                blogURL={blogURL} 
-                handleAddBlog={handleAddBlog}
-                handleTitleChange={handleTitleChange}
-                handleAuthorChange={handleAuthorChange}
-                handleBlogURLChange={handleBlogURLChange}
-                />   
-                <br></br>
+                <div><Notification message={(user.username+" has been logged in: ")} />
+                    <div>
+                        <form onSubmit={handleLogOut}>
+                            <button type="submit">Log Out</button>
+                        </form>
+                    </div>
+                </div>
+                <div>
+                    <BlogForm 
+                    title={title} 
+                    author={author} 
+                    blogURL={blogURL} 
+                    handleAddBlog={handleAddBlog}
+                    handleTitleChange={handleTitleChange}
+                    handleAuthorChange={handleAuthorChange}
+                    handleBlogURLChange={handleBlogURLChange}
+                    />   
+                    <br></br>
+                </div>
+                <div>
+                    {blogs.map(blog => <Blog key={blog.id} blog={blog}/>)}
+                </div>     
             </div>
-            <div>
-                {blogs.map(blog => <Blog key={blog.id} blog={blog}/>)}
-            </div>     
-        </div>
-     
-        }
+        
+            }
 
         </div>
         
