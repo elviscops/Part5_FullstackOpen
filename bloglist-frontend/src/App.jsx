@@ -65,6 +65,7 @@ const App = () => {
     
 
     useEffect(() => {
+
         blogService.getAll().then(blogs =>
         setBlogs( blogs )
         )  
@@ -74,6 +75,7 @@ const App = () => {
         const loggedUserJSON = window.localStorage.getItem('loggedInUser')
         if (loggedUserJSON) {
           const user = JSON.parse(loggedUserJSON)
+          console.log(user.token)
           setUser(user)
         }
       }, [])
@@ -90,11 +92,10 @@ const App = () => {
             window.localStorage.setItem(
                 'loggedInUser', JSON.stringify(user)
             ) 
-
-
             console.log(user, window.localStorage.getItem('loggedInUser'))
+
             setUser(user)
-            
+            blogService.setToken(user.token)
             setUsername('')
             setPassword('')
         } catch (exception) {
@@ -105,17 +106,39 @@ const App = () => {
         }
       }
 
-      const handleLogOut = async (event) => {
+    const handleLogOut = async (event) => {
         console.log("Logout")
         window.localStorage.removeItem('loggedNoteappUser')
         window.localStorage.clear()
-
-        }
+    }
       
 
-      const handleAddBlog = (event) => {
+      const handleAddBlog = async (event) => {
         event.preventDefault()
-        console.log('add blog: ', title, author, blogURL)
+        blogService.setToken(user.token)
+        const newBlog = {
+            title:title,
+            author:author,
+            url:blogURL
+        }
+    
+        try {
+            const blog = await blogService.create(newBlog)
+            console.log("creating blog",blog)
+            setBlogs(blogs.concat(blog))
+            setTitle('')
+            setAuthor('')
+            setBlogURL('')
+
+        } catch (exception) {
+            console.log(exception)
+            setTimeout(()=>{
+                console.log()
+            },5000)
+        }
+
+
+
       }
 
     const handleUsernameChange = (event) => {
