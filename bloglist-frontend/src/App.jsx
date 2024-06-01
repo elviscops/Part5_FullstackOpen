@@ -39,9 +39,14 @@ const BlogForm = (props) => {
     </div>)
 }
 
-const Notification = (props) => {
-    console.log(props.message)
-    return <div>{props.message}</div>
+const Notification = ({message,mood}) => {
+    const notificationClass = mood ? 'notificationPositive' : 'notificationNegative';
+    if (message === null) {
+        return null
+    }
+    return (
+        <div className={notificationClass}>{message}</div>
+    )
 }
 
 
@@ -58,7 +63,8 @@ const App = () => {
     const [user, setUser] = useState(null)
 
     
-    const [message, setMessage] = useState(null)
+    const [notificationMessage, setNotificationMessage] = useState('')
+    const [notificationMood, setNotificationMood] = useState(true)
 
     
 
@@ -67,7 +73,10 @@ const App = () => {
     useEffect(() => {
 
         blogService.getAll().then(blogs =>
-        setBlogs( blogs )
+        setBlogs( blogs ),
+        setTimeout(() => {
+            setNotificationMessage(null,false)
+          }, 0)
         )  
     }, [])
 
@@ -100,9 +109,11 @@ const App = () => {
             setPassword('')
         } catch (exception) {
             console.log(exception)
-            setTimeout(()=>{
-                console.log()
-            },5000)
+            setNotificationMessage(`Wrong username or password`,true)
+                setNotificationMood(false)
+                setTimeout(() => {
+                    setNotificationMessage(null)
+                    }, 5000)
         }
       }
 
@@ -129,6 +140,11 @@ const App = () => {
             setTitle('')
             setAuthor('')
             setBlogURL('')
+            setNotificationMessage(`New Blog: ${blog.title} by ${blog.author} added`,true)
+                setNotificationMood(true)
+                setTimeout(() => {
+                    setNotificationMessage(null)
+                    }, 5000)
 
         } catch (exception) {
             console.log(exception)
@@ -169,24 +185,38 @@ const App = () => {
         event.preventDefault()
         console.log(event.target.value);
         setBlogURL(event.target.value);
-    }    
+    }     //notificationMessage notificationMood
 
     return (
         <div>
             <h1>Blogs List Page</h1>
 
             {  user === null &&
-                <LoginForm 
-                        username={username} 
-                        password={password} 
-                        handleLogin={handleLogin}
-                        handleUsernameChange={handleUsernameChange}
-                        handlePasswordChange={handlePasswordChange}
-            /> }
+                <div>
+                    <div>
+                        <Notification message={notificationMessage} mood={notificationMood}/>
+                    </div>
+                    <div>
+                        <LoginForm 
+                            username={username} 
+                            password={password} 
+                            handleLogin={handleLogin}
+                            handleUsernameChange={handleUsernameChange}
+                            handlePasswordChange={handlePasswordChange}
+                        /> 
+                    </div>
+                    
+                </div>
+
+                }
 
             {  user !== null && 
             <div>
-                <div><Notification message={(user.username+" has been logged in: ")} />
+                <div>
+                    <div>
+                        <Notification message={notificationMessage} mood={notificationMood}/>
+                    </div>
+                    <div>{user.username} has been logged in: </div>
                     <div>
                         <form onSubmit={handleLogOut}>
                             <button type="submit">Log Out</button>
