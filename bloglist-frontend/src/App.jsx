@@ -50,10 +50,14 @@ const App = () => {
 
     useEffect(() => {
         const loggedUserJSON = window.localStorage.getItem('loggedInUser')
+        console.log(loggedUserJSON)
         if (loggedUserJSON) {
-          const user = JSON.parse(loggedUserJSON)
-          setUser(user)
+            const user = JSON.parse(loggedUserJSON)
+            
+            setUser(user)
+            blogService.setToken(user.token)
         }
+        
       }, [])
 
     const logoutUser = async (event) => {
