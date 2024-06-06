@@ -21,3 +21,42 @@
     background: lightgrey;
     font-size: 20px;
 }
+
+.blogPost {
+    background-color: #a8a8a8;
+    padding: 5px;
+    border: 1px;
+    border-style: solid;
+    border-color: black;
+    margin: 1px;
+    border-radius: 5px;
+
+}
+.blogPost:hover {
+    background-color: #bfbcbc;
+    padding: 5px;
+    border: 1px;
+    border-style: solid;
+    border-color: black;
+    margin: 1px;
+    border-radius: 5px;
+}
+
+.blogPost {
+    background-color: #a8a8a8;
+    padding: 5px;
+    border: 1px;
+    border-style: solid;
+    border-color: black;
+    margin: 1px;
+    border-radius: 5px;
+
+}
+
+.viewHideButton {
+    margin: 1px 0px 1px 15px;
+}
+
+body {
+    background-color: #e9e4d8;
+}
