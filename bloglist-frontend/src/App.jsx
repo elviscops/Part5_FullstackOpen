@@ -40,11 +40,15 @@ const App = () => {
     const [notificationMood, setNotificationMood] = useState(true)
 
     useEffect(() => {
-        blogService.getAll().then(blogs =>
-        setBlogs( blogs ),
-        setTimeout(() => {
+        blogService.getAll().then(blogs => {
+
+            const blogList = blogs.sort((a,b)=> b.likes - a.likes)
+            setBlogs( blogList )
+            setTimeout(() => {
             setNotificationMessage(null,false)
           }, 0)
+        }
+
         )  
     }, [])
 
@@ -96,8 +100,12 @@ const App = () => {
     const likeBlogPost = async likedBlog => {
         try{
             await blogService.like(likedBlog.id ,likedBlog)
-            const blogs = await blogService.getAll()
-            setBlogs( blogs )
+            const blogs = await blogService.getAll().then(blogs => {
+
+                const blogList = blogs.sort((a,b)=> b.likes - a.likes)
+                setBlogs( blogList )
+            }
+            )
         }
         catch{
             ;
@@ -107,8 +115,12 @@ const App = () => {
     const deleteBlogPost = async id => {
         try{
             await blogService.deleteBlog(id)
-            const blogs = await blogService.getAll()
-            setBlogs( blogs )
+            const blogs = await blogService.getAll().then(blogs => {
+
+                const blogList = blogs.sort((a,b)=> b.likes - a.likes)
+                setBlogs( blogList )
+            }
+            )
         }
         catch{
             ;

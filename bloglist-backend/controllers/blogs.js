@@ -15,7 +15,6 @@ router.post('/', userExtractor, async (request, response) => {
   const blog = new Blog(request.body)
 
   const user = request.user
-  console.log(user)
 
   if (!user ) {
     return response.status(403).json({ error: 'user missing' })
