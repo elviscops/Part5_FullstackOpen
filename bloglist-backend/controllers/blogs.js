@@ -15,6 +15,7 @@ router.post('/', userExtractor, async (request, response) => {
   const blog = new Blog(request.body)
 
   const user = request.user
+  console.log(user)
 
   if (!user ) {
     return response.status(403).json({ error: 'user missing' })
@@ -24,11 +25,13 @@ router.post('/', userExtractor, async (request, response) => {
     return response.status(400).json({ error: 'title or url missing' })
   }   
 
+
+
+  await user.save()
+
   blog.likes = blog.likes | 0
   blog.user = user
   user.blogs = user.blogs.concat(blog._id)
-
-  await user.save()
 
   const savedBlog = await blog.save()
 
@@ -48,11 +51,8 @@ router.delete('/:id', userExtractor, async (request, response) => {
   }
 
   await blog.deleteOne()
-
   user.blogs = user.blogs.filter(b => b._id.toString() !== blog._id.toString())
-
   await user.save()
-
   response.status(204).end()
 })
 

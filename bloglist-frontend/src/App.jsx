@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react'
 import Blog from './components/Blog'
 import BlogForms from './components/BlogForm'
-import LoginFormss from './components/LoginForm'
+import LoginForm from './components/LoginForm'
 import blogService from './services/blogs'
 import loginService from './services/login'
 
@@ -50,10 +50,8 @@ const App = () => {
 
     useEffect(() => {
         const loggedUserJSON = window.localStorage.getItem('loggedInUser')
-        console.log(loggedUserJSON)
         if (loggedUserJSON) {
             const user = JSON.parse(loggedUserJSON)
-            
             setUser(user)
             blogService.setToken(user.token)
         }
@@ -94,6 +92,29 @@ const App = () => {
         }
       }
 
+
+    const likeBlogPost = async likedBlog => {
+        try{
+            await blogService.like(likedBlog.id ,likedBlog)
+            const blogs = await blogService.getAll()
+            setBlogs( blogs )
+        }
+        catch{
+            ;
+        }
+    }
+
+    const deleteBlogPost = async id => {
+        try{
+            await blogService.deleteBlog(id)
+            const blogs = await blogService.getAll()
+            setBlogs( blogs )
+        }
+        catch{
+            ;
+        }
+    }
+
     return (
         <div>
             <h1>Blogs List Page</h1>
@@ -103,7 +124,7 @@ const App = () => {
                         <Notification message={notificationMessage} mood={notificationMood}/>
                     </div>
                     <div>
-                        <LoginFormss loginUser={loginUser}/>
+                        <LoginForm loginUser={loginUser}/>
                     </div>
                 </div>
                 }
@@ -129,7 +150,7 @@ const App = () => {
                         <br></br>
                     </div>
                     <div>
-                        {blogs.map(blog => <Blog key={blog.id} blog={blog}/>)}
+                        {blogs.map(blog => <Blog key={blog.id} blog={blog} likeBlogPost={likeBlogPost} deleteBlogPost={deleteBlogPost} />)}
                     </div>     
                 </div>
             }

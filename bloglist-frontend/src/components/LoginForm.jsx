@@ -16,7 +16,7 @@ const LoginForm = ({loginUser}) => {
 
     return (
         <div>
-            <h2>Loginsss</h2>
+            <h2>Login</h2>
             <form onSubmit={handleLogin}>
                 <div>
                     Username <input type='text' value={username} onChange={(event)=>setUsername(event.target.value)}/>
