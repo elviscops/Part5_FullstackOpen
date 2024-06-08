@@ -1,6 +1,6 @@
 import { useState } from 'react'
 
-const BlogForm = ({createNewBlog}) => {
+const BlogForm = ({ createNewBlog }) => {
     const [title, setTitle] = useState([])
     const [author, setAuthor] = useState([])
     const [blogURL, setBlogURL] = useState([])
@@ -22,17 +22,17 @@ const BlogForm = ({createNewBlog}) => {
         <h2>Add new Blog</h2>
         <form onSubmit={handleAddBlog}>
             <div>
-                Title: <input type='text' value={title} onChange={(event)=>setTitle(event.target.value)}/>
+                Title: <input type='text' value={title} onChange={(event) => setTitle(event.target.value)}/>
             </div>
             <div>
-                Author: <input type='text' value={author} onChange={(event)=>setAuthor(event.target.value)}/>
+                Author: <input type='text' value={author} onChange={(event) => setAuthor(event.target.value)}/>
             </div>
             <div>
-                Link: <input type='text' value={blogURL} onChange={(event)=>setBlogURL(event.target.value)}/>
+                Link: <input type='text' value={blogURL} onChange={(event) => setBlogURL(event.target.value)}/>
             </div>
             <button type="submit">Add</button>
         </form>
     </div>)
 }
-  
-  export default BlogForm
+
+export default BlogForm

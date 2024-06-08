@@ -1,10 +1,8 @@
 import { useState, useRef } from 'react'
 import Togglable from '../components/Togglable'
 
-
-const Blog = ({ blog , likeBlogPost, deleteBlogPost, username}) => {
-    const [blogLikes,setBlogLikes] = useState(blog.likes);
-
+const Blog = ({ blog , likeBlogPost, deleteBlogPost, username }) => {
+    const [blogLikes,setBlogLikes] = useState(blog.likes)
     const blogPostRef = useRef()
 
     const tmpBlog = {
@@ -14,31 +12,31 @@ const Blog = ({ blog , likeBlogPost, deleteBlogPost, username}) => {
         user: blog.user.id,
         id: blog.id,
         likes: blogLikes+1,
-    };
-
-    const likeBlog = () =>{
-        setBlogLikes(blogLikes+1);
-        likeBlogPost(tmpBlog);
     }
 
-    const deleteBlog = (id) =>{
+    const likeBlog = () => {
+        setBlogLikes(blogLikes+1)
+        likeBlogPost(tmpBlog)
+    }
+
+    const deleteBlog = (id) => {
         if (window.confirm(`Delete blog ${blog.title} by "${blog.author}`)){
-            deleteBlogPost(id);
+            deleteBlogPost(id)
         }
     }
 
     return (
         <div className="blogPost">
             <div>
-            {blog.title} : {blog.author}  
+            {blog.title} : {blog.author}
             <Togglable buttonLabel="view" ref={blogPostRef}>
                 <div>URL: {blog.url}</div>
                 <div>Likes: {blog.likes}<button onClick={likeBlog}>Likes</button></div>
                 <div>User: {blog.user.username}</div>
-                {blog.user.username === username && (<button onClick={()=>deleteBlog(blog.id)}>remove</button>)}
+                {blog.user.username === username && (<button onClick={() => deleteBlog(blog.id)}>remove</button>)}
             </Togglable>
             </div>
-        </div> ); 
+        </div> )
 }
 
 export default Blog

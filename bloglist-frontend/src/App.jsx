@@ -7,8 +7,8 @@ import blogService from './services/blogs'
 import loginService from './services/login'
 
 
-const Notification = ({message,mood}) => {
-    const notificationClass = mood ? 'notificationPositive' : 'notificationNegative';
+const Notification = ({ message,mood }) => {
+    const notificationClass = mood ? 'notificationPositive' : 'notificationNegative'
     if (message === null) {
         return null
     }
@@ -24,16 +24,14 @@ const App = () => {
     const blogFormRef = useRef()
 
     useEffect(() => {
-        blogService.getAll().then(blogs => {
-
-            const blogList = blogs.sort((a,b)=> b.likes - a.likes)
-            setBlogs( blogList )
-            setTimeout(() => {
-            setNotificationMessage(null,false)
-          }, 0)
-        }
-
-        )  
+            blogService.getAll().then(blogs => {
+                const blogList = blogs.sort((a,b) => b.likes - a.likes)
+                setBlogs( blogList )
+                setTimeout(() => {
+                setNotificationMessage(null,false)
+                }, 0)
+            }
+        )
     }, [])
 
     useEffect(() => {
@@ -43,22 +41,21 @@ const App = () => {
             setUser(user)
             blogService.setToken(user.token)
         }
-        
       }, [])
 
-    const logoutUser = async (event) => {
+    const logoutUser = async ( event ) => {
         window.localStorage.removeItem('loggedNoteappUser')
         window.localStorage.clear()
     }
 
-    const loginUser = async ({username,password}) => {
+    const loginUser = async ({ username,password }) => {
         try {
-            const user = await loginService.login({username,password})
-            window.localStorage.setItem('loggedInUser', JSON.stringify(user)) 
+            const user = await loginService.login({ username,password })
+            window.localStorage.setItem('loggedInUser',JSON.stringify(user))
             setUser(user)
             blogService.setToken(user.token)
         } catch (exception) {
-            setNotificationMessage(`Wrong username or password`,true)
+            setNotificationMessage('Wrong username or password',true)
                 setNotificationMood(false)
                 setTimeout(() => {
                     setNotificationMessage(null)
@@ -83,34 +80,22 @@ const App = () => {
 
 
     const likeBlogPost = async likedBlog => {
-        try{
-            await blogService.like(likedBlog.id ,likedBlog)
-            const blogs = await blogService.getAll().then(blogs => {
-
-                const blogList = blogs.sort((a,b)=> b.likes - a.likes)
-                setBlogs( blogList )
-            }
-            )
+        await blogService.like(likedBlog.id ,likedBlog)
+        const blogs = await blogService.getAll().then(blogs => {
+            const blogList = blogs.sort((a,b) => b.likes - a.likes)
+            setBlogs( blogList )
         }
-        catch{
-            ;
-        }
+        )
     }
 
     const deleteBlogPost = async id => {
-        try{
-
-
-                await blogService.deleteBlog(id)
-                const blogs = await blogService.getAll().then(blogs => {
-                const blogList = blogs.sort((a,b)=> b.likes - a.likes)
-                setBlogs( blogList )
-            }
-            )
+        await blogService.deleteBlog(id)
+        const blogs = await blogService.getAll().then(blogs => {
+            const blogList = blogs.sort((a,b) => b.likes - a.likes)
+            setBlogs( blogList )
         }
-        catch{
-            ;
-        }
+        )
+
     }
 
     return (
@@ -127,7 +112,7 @@ const App = () => {
                 </div>
                 }
 
-            {  user !== null && 
+            {  user !== null &&
                 <div>
                     <div>
                         <div>
@@ -149,7 +134,7 @@ const App = () => {
                     </div>
                     <div>
                         {blogs.map(blog => <Blog key={blog.id} blog={blog} likeBlogPost={likeBlogPost} deleteBlogPost={deleteBlogPost} username={user.username} />)}
-                    </div>     
+                    </div>
                 </div>
             }
         </div>
