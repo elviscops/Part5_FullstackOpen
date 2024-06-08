@@ -1,9 +1,11 @@
-import { useState, useEffect } from 'react'
+import { useState, useRef } from 'react'
 import Togglable from '../components/Togglable'
 
 
 const Blog = ({ blog , likeBlogPost, deleteBlogPost, username}) => {
     const [blogLikes,setBlogLikes] = useState(blog.likes);
+
+    const blogPostRef = useRef()
 
     const tmpBlog = {
         title: blog.title,
@@ -29,7 +31,7 @@ const Blog = ({ blog , likeBlogPost, deleteBlogPost, username}) => {
         <div className="blogPost">
             <div>
             {blog.title} : {blog.author}  
-            <Togglable buttonLabel="view">
+            <Togglable buttonLabel="view" ref={blogPostRef}>
                 <div>URL: {blog.url}</div>
                 <div>Likes: {blog.likes}<button onClick={likeBlog}>Likes</button></div>
                 <div>User: {blog.user.username}</div>
