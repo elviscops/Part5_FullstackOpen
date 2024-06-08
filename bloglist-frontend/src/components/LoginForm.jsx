@@ -32,9 +32,7 @@ const LoginForm = ({ loginUser }) => {
 }
 
 LoginForm.propTypes = {
-    handleLogin: PropTypes.func.isRequired,
-    username: PropTypes.string.isRequired,
-    password: PropTypes.string.isRequired
+    loginUser: PropTypes.func.isRequired,
 }
 
 export default LoginForm
