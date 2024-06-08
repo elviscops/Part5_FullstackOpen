@@ -1,19 +1,5 @@
 import { useState, useEffect } from 'react'
-
-const Togglable = (props) => {
-    const [visible, setVisible] = useState(false)
-    const hideWhenVisible = { display: visible ? 'none' : '' }
-    const showWhenVisible = { display: visible ? '' : 'none' }
-    const toggleVisibility = () => setVisible(!visible)
-    return ( 
-        <>
-            <button className = "viewHideButton" style={hideWhenVisible} onClick={toggleVisibility}>{props.buttonLabel}</button>
-            <button className = "viewHideButton" style={showWhenVisible} onClick={toggleVisibility}>Hide</button>
-            <div style={showWhenVisible}>{props.children}</div>
-        </>
-    )
-}
-
+import Togglable from '../components/Togglable'
 
 
 const Blog = ({ blog , likeBlogPost, deleteBlogPost, username}) => {

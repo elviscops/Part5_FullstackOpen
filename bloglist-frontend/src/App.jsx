@@ -1,7 +1,8 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import Blog from './components/Blog'
 import BlogForms from './components/BlogForm'
 import LoginForm from './components/LoginForm'
+import Togglable from './components/Togglable'
 import blogService from './services/blogs'
 import loginService from './services/login'
 
@@ -14,30 +15,13 @@ const Notification = ({message,mood}) => {
     return (<div className={notificationClass}>{message}</div>)
 }
 
-const Togglable = (props) => {
-    const [visible, setVisible] = useState(false)
-    const hideWhenVisible = { display: visible ? 'none' : '' }
-    const showWhenVisible = { display: visible ? '' : 'none' }
-    const toggleVisibility = () => setVisible(!visible)
-
-    return ( 
-        <div>
-            <div style={hideWhenVisible}>
-                <button onClick={toggleVisibility}>{props.buttonLabel}</button>
-            </div>
-            <div style={showWhenVisible}>
-                {props.children}
-                <button onClick={toggleVisibility}>Close</button>
-            </div>
-        </div>
-    )
-}
-
 const App = () => {
     const [blogs, setBlogs] = useState([])
     const [user, setUser] = useState(null)
     const [notificationMessage, setNotificationMessage] = useState('')
     const [notificationMood, setNotificationMood] = useState(true)
+
+    const blogFormRef = useRef()
 
     useEffect(() => {
         blogService.getAll().then(blogs => {
@@ -84,6 +68,7 @@ const App = () => {
 
     const createNewBlog = async (newBlog) => {
         try {
+            blogFormRef.current.toggleVisibility()
             const blog = await blogService.create(newBlog)
             setBlogs(blogs.concat(blog))
             setNotificationMessage(`New Blog: ${blog.title} by ${blog.author} added`,true)
@@ -157,7 +142,7 @@ const App = () => {
                     </div>
                     <br></br>
                     <div>
-                        <Togglable buttonLabel="Add New Blog">
+                        <Togglable buttonLabel="Add New Blog" ref={blogFormRef}>
                             <BlogForms createNewBlog={createNewBlog}/>
                         </Togglable>
                         <br></br>
