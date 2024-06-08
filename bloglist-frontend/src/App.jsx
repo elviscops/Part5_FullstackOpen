@@ -114,9 +114,10 @@ const App = () => {
 
     const deleteBlogPost = async id => {
         try{
-            await blogService.deleteBlog(id)
-            const blogs = await blogService.getAll().then(blogs => {
 
+
+                await blogService.deleteBlog(id)
+                const blogs = await blogService.getAll().then(blogs => {
                 const blogList = blogs.sort((a,b)=> b.likes - a.likes)
                 setBlogs( blogList )
             }
@@ -162,7 +163,7 @@ const App = () => {
                         <br></br>
                     </div>
                     <div>
-                        {blogs.map(blog => <Blog key={blog.id} blog={blog} likeBlogPost={likeBlogPost} deleteBlogPost={deleteBlogPost} />)}
+                        {blogs.map(blog => <Blog key={blog.id} blog={blog} likeBlogPost={likeBlogPost} deleteBlogPost={deleteBlogPost} username={user.username} />)}
                     </div>     
                 </div>
             }

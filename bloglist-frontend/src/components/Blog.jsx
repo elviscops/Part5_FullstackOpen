@@ -16,7 +16,7 @@ const Togglable = (props) => {
 
 
 
-const Blog = ({ blog , likeBlogPost, deleteBlogPost}) => {
+const Blog = ({ blog , likeBlogPost, deleteBlogPost, username}) => {
     const [blogLikes,setBlogLikes] = useState(blog.likes);
 
     const tmpBlog = {
@@ -34,9 +34,10 @@ const Blog = ({ blog , likeBlogPost, deleteBlogPost}) => {
     }
 
     const deleteBlog = (id) =>{
-        deleteBlogPost(id);
+        if (window.confirm(`Delete blog ${blog.title} by "${blog.author}`)){
+            deleteBlogPost(id);
+        }
     }
-
 
     return (
         <div className="blogPost">
@@ -46,19 +47,10 @@ const Blog = ({ blog , likeBlogPost, deleteBlogPost}) => {
                 <div>URL: {blog.url}</div>
                 <div>Likes: {blog.likes}<button onClick={likeBlog}>Likes</button></div>
                 <div>User: {blog.user.username}</div>
-                <button onClick={()=>deleteBlog(blog.id)}>remove</button>
+                {blog.user.username === username && (<button onClick={()=>deleteBlog(blog.id)}>remove</button>)}
             </Togglable>
             </div>
         </div> ); 
 }
 
-
-
-
-
-
-
-
 export default Blog
-
-//<button onClick={()=>console.log(blog.title)}>view</button>()=>console.log(blog.title)
