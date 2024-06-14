@@ -1,8 +1,8 @@
 import React from 'react'
 import '@testing-library/jest-dom'
 import { render, screen } from "@testing-library/react"
+import userEvent from '@testing-library/user-event'
 import Blog from "./Blog"
-import { expect } from "vitest"
 
 test('renders blog title and author', ()=>{
 
@@ -23,4 +23,30 @@ test('renders blog title and author', ()=>{
     const div = container.querySelector('.blogPost')
     expect(div).toHaveTextContent('Testing Blog Title : Testing Blog Author')
 
+});
+
+test('renders likes and url is rendered when show button is pressed',async ()=>{
+
+    const blog = {
+        title: 'Testing Blog Title',
+        author: "Testing Blog Author",
+        url: "blog.url",
+        user: "1",
+        id: "blog.id",
+        likes: 0
+    }
+
+    const { container } = render(<Blog blog={blog}/>)
+    
+    const user = userEvent.setup()
+    const view = screen.getByText('view')
+    await user.click(view)
+
+    const div = container.querySelector('.urlView')
+    expect(div).not.toHaveStyle('display: none')
+    const div1 = container.querySelector('.likesView')
+    expect(div1).not.toHaveStyle('display: none')
+
 })
+
+

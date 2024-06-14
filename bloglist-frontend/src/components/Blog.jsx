@@ -30,10 +30,12 @@ const Blog = ({ blog , likeBlogPost, deleteBlogPost, username }) => {
             <div>
             {blog.title} : {blog.author}
             <Togglable buttonLabel="view" ref={blogPostRef}>
-                <div>URL: {blog.url}</div>
-                <div>Likes: {blog.likes}<button onClick={likeBlog}>Likes</button></div>
-                <div>User: {blog.user.username}</div>
-                {blog.user.username === username && (<button onClick={() => deleteBlog(blog.id)}>remove</button>)}
+                <div className='togglableContent'>
+                    <div className='urlView'>URL: {blog.url}</div>
+                    <div className='likesView'>Likes: {blog.likes}<button onClick={likeBlog}>Likes</button></div>
+                    <div>User: {blog.user.username}</div>
+                    {blog.user.username === username && (<button onClick={() => deleteBlog(blog.id)}>remove</button>)}
+                </div>
             </Togglable>
             </div>
         </div> )
