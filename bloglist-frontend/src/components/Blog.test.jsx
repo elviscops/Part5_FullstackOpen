@@ -49,4 +49,33 @@ test('renders likes and url is rendered when show button is pressed',async ()=>{
 
 })
 
+test('When like button is pressed, function is called twice',async ()=>{
+
+    const blog = {
+        title: 'Testing Blog Title',
+        author: "Testing Blog Author",
+        url: "blog.url",
+        user: "1",
+        id: "blog.id",
+        likes: 0
+    }
+    
+    const user = userEvent.setup()
+    const mockHandler = vi.fn()
+
+    const { container } = render(<Blog blog={blog} likeBlogPost={mockHandler}/>)
+    const view = screen.getByText('view')
+    await user.click(view)
+
+    const div = container.querySelector('.togglableContent')
+    expect(div).not.toHaveStyle('display: none')
+
+    const likeButton = screen.getByText('Likes')
+    await user.click(likeButton)
+    await user.click(likeButton)
+
+    expect(mockHandler.mock.calls).toHaveLength(2)
+
+})
+
 
