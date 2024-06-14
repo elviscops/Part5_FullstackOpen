@@ -3,6 +3,7 @@ import '@testing-library/jest-dom'
 import { render, screen } from "@testing-library/react"
 import userEvent from '@testing-library/user-event'
 import Blog from "./Blog"
+import BlogForm from './BlogForm'
 
 test('renders blog title and author', ()=>{
 
@@ -78,4 +79,33 @@ test('When like button is pressed, function is called twice',async ()=>{
 
 })
 
+// title:title,
+// author:author,
+// url:blogURL addNewBlogForm
 
+
+test('testing Form', async () => {
+    const mockHandler = vi.fn()
+    const user = userEvent.setup()
+    
+    render(<BlogForm createNewBlog={mockHandler}/>)
+    
+    const titleInput = screen.getByPlaceholderText('title')
+    const authorInput = screen.getByPlaceholderText('author')
+    const urlInput = screen.getByPlaceholderText('url')
+    const saveButton = screen.getByText('Add')
+
+    await user.type(titleInput, 'testing a title...')
+    await user.type(authorInput, 'testing author...')
+    await user.type(urlInput, 'testing a url...')
+
+    await user.click(saveButton)
+
+    expect(mockHandler.mock.calls).toHaveLength(1)
+    expect(mockHandler.mock.calls[0][0].title).toBe('testing a title...')
+    expect(mockHandler.mock.calls[0][0].author).toBe('testing author...')
+    expect(mockHandler.mock.calls[0][0].url).toBe('testing a url...')
+
+
+
+})
