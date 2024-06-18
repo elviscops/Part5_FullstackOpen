@@ -44,7 +44,7 @@ const App = () => {
       }, [])
 
     const logoutUser = async ( event ) => {
-        window.localStorage.removeItem('loggedNoteappUser')
+        window.localStorage.removeItem('loggedBlogappUser')
         window.localStorage.clear()
     }
 
