@@ -34,7 +34,7 @@ const Blog = ({ blog , likeBlogPost, deleteBlogPost, username }) => {
                     <div className='urlView'>URL: {blog.url}</div>
                     <div className='likesView'>Likes: {blog.likes}<button id="bloglikeBtn" onClick={likeBlog}>Likes</button></div>
                     <div>User: {blog.user.username}</div>
-                    {blog.user.username === username && (<button onClick={() => deleteBlog(blog.id)}>remove</button>)}
+                    {blog.user.username === username && (<button id='removeBlogBtn' onClick={() => deleteBlog(blog.id)}>remove</button>)}
                 </div>
             </Togglable>
             </div>
